@@ -1,5 +1,6 @@
 package com.desafio.softplan.domain;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 
@@ -7,12 +8,19 @@ import jakarta.persistence.Id;
 public class Cliente {
     @Id
     private Long id;
+
+    @Column(nullable = false, length = 100)
     private String nome;
+
+    @Column(nullable = false)
     private Integer limite;
+
+    @Column(nullable = false)
     private Integer saldo;
 
-    public Cliente() {}
-    
+    public Cliente() {
+    }
+
     public Long getId() {
         return id;
     }

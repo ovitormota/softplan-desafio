@@ -37,13 +37,16 @@ public class TransacaoService {
 
         validarCampos(request);
 
+        int novoSaldo;
         if (TipoTransacaoConstantes.DEBITO.equals(request.getTipo())) {
-            if (cliente.getSaldo() - request.getValor() < -cliente.getLimite()) {
+            novoSaldo = cliente.getSaldo() - request.getValor();
+            if (novoSaldo < -cliente.getLimite()) {
                 throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, "Saldo insuficiente");
             }
-            cliente.setSaldo(cliente.getSaldo() - request.getValor());
+            cliente.setSaldo(novoSaldo);
         } else {
-            cliente.setSaldo(cliente.getSaldo() + request.getValor());
+            novoSaldo = cliente.getSaldo() + request.getValor();
+            cliente.setSaldo(novoSaldo);
         }
 
         Transacao transacao = new Transacao();
@@ -56,10 +59,7 @@ public class TransacaoService {
         transacaoRepository.save(transacao);
         clienteRepository.save(cliente);
 
-        SaldoResponseDTO response = new SaldoResponseDTO();
-        response.setLimite(cliente.getLimite());
-        response.setSaldo(cliente.getSaldo());
-        return response;
+        return new SaldoResponseDTO(cliente.getLimite(), novoSaldo);
     }
 
     public ExtratoResponseDTO obterExtrato(Long clienteId) {
@@ -81,9 +81,7 @@ public class TransacaoService {
                         t.getRealizadaEm()))
                 .toList();
 
-        ExtratoResponseDTO extrato = new ExtratoResponseDTO(saldoInfo, transacoesInfo);
-
-        return extrato;
+        return new ExtratoResponseDTO(saldoInfo, transacoesInfo);
     }
 
     private void validarCampos(TransacaoRequestDTO request) {
@@ -91,6 +89,12 @@ public class TransacaoService {
             throw new ResponseStatusException(
                     HttpStatus.UNPROCESSABLE_ENTITY,
                     "O valor da transação deve ser um número positivo e maior que zero.");
+        }
+
+        if (request.getValor() % 1 != 0) {
+            throw new ResponseStatusException(
+                    HttpStatus.UNPROCESSABLE_ENTITY,
+                    "O valor deve ser um número inteiro.");
         }
 
         if (request.getTipo() == null || (!request.getTipo().equals(TipoTransacaoConstantes.RECEBIMENTO)
@@ -104,7 +108,7 @@ public class TransacaoService {
                 || request.getDescricao().length() > 10) {
             throw new ResponseStatusException(
                     HttpStatus.UNPROCESSABLE_ENTITY,
-                    "A descrição deve ser fornecida e não pode ter mais de 10 caracteres.");
+                    "A descrição deve ser fornecida e ter entre 1 e 10 caracteres.");
         }
     }
 }

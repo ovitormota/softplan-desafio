@@ -6,7 +6,6 @@ public class TransacaoInfoDTO {
     private Integer valor;
     private String tipo;
     private String descricao;
-
     private Instant realizadaEm;
 
     public TransacaoInfoDTO() {

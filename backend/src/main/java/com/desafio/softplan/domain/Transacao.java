@@ -1,16 +1,14 @@
 package com.desafio.softplan.domain;
 
 import java.time.Instant;
-import java.time.LocalDateTime;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Temporal;
-import jakarta.persistence.TemporalType;
 
 @Entity
 public class Transacao {
@@ -18,13 +16,20 @@ public class Transacao {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false)
     private Integer valor;
-    private String tipo; 
+
+    @Column(nullable = false, length = 1)
+    private String tipo;
+
+    @Column(nullable = false, length = 10)
     private String descricao;
+
+    @Column(nullable = false)
     private Instant realizadaEm;
 
     @ManyToOne
-    @JoinColumn(name = "cliente_id")
+    @JoinColumn(name = "cliente_id", nullable = false)
     private Cliente cliente;
 
     public Transacao() {
