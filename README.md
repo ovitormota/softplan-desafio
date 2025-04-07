@@ -1,12 +1,9 @@
-# Desafio técnico Softplan - Full Stack - Gestão Pública - Ambiental - 2024
-
 ## Desafio
 
 Para esse desafio será preciso desenvolver uma pequena API REST (duas rotas) escrita em Java, além de uma pequena aplicação frontend (duas rotas) escrita em Typescript/Javascript.
 O desafio do backend é baseado na ["Rinha de backend 2024/1"](https://github.com/zanfranceschi/rinha-de-backend-2024-q1),
 mas não idêntico (ao invés de crédito ('c'), usamos recebíveis ('r')). Fique à vontade para tomar por base alguma das implementações da rinha.
 Não é preciso floreio, nem que o frontend fique bonito. Será observado se os requisitos foram ou não cumpridos.
-Para entregar, suba um projeto privado no GitLab e convide @mausampaio e @gustavoluchi como membros.
 
 ## Desafio frontend
 
